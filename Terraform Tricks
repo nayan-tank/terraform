@@ -1,0 +1,21 @@
+Terraform Tricks 
+=================
+
+resource "aws_security_group" "alb_sg" {
+  for_each     = { for key, value in var.input.alb_nlb_waf_configuration : key => value if value.alb_create == true }
+
+  
+  ingress {
+    description = "Allow inbound traffic to Load Balancers"
+    from_port   = 443 
+    to_port     = 443 
+    protocol    = "tcp"
+    cidr_blocks = var.input.alb_nlb_waf_configuration[each.key].nlb_mount == true ? ["0.0.0.0/0"] : var.global.cygnet_cidr_blocks
+  }
+
+}
+
+
+{ for key, value in var.input.alb_nlb_waf_configuration : key => value if value.alb_create == true }:
+
+This is a comprehension expression that filters the elements of the var.input.alb_nlb_waf_configuration map based on the condition value.alb_create == true. It creates a new map with only the elements where the alb_create attribute is set to true.
