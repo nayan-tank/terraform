@@ -81,6 +81,7 @@ source "googlecompute" "ubuntu" {
     base_os     = "ubuntu-2204"
     built_by    = "packer"
     provisioner = "ansible"
+    owner       = env("hostname") # read system env variable 
   }
 }
 
