@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "name": "ubuntu",
+      "builder_type": "googlecompute",
+      "build_time": 1782629864,
+      "files": null,
+      "artifact_id": "ansible-controller-20260628-065216",
+      "packer_run_uuid": "2e333464-536c-3d16-5b09-0a3fe7f8d60c",
+      "custom_data": null
+    }
+  ],
+  "last_run_uuid": "2e333464-536c-3d16-5b09-0a3fe7f8d60c"
+}

@@ -1,0 +1,42 @@
+---
+# ============================================================
+# playbook.yml
+# Runs INSIDE the Packer build, against the temporary EC2 host.
+# Whatever this installs/configures gets baked into the final AMI.
+# `hosts: all` works because Packer feeds Ansible its own inventory.
+# ============================================================
+- name: Configure Ansible controller image
+  hosts: all
+  become: true # run tasks with sudo
+
+  tasks:
+    - name: Install base packages
+      ansible.builtin.apt:
+        name:
+          - python3-pip
+          - git
+          - curl
+          - unzip
+        state: present
+        update_cache: true
+
+    - name: Install Ansible itself (so this AMI can act as a controller)
+      ansible.builtin.pip:
+        name: ansible
+        state: present
+
+    - name: Create a working directory for playbooks
+      ansible.builtin.file:
+        path: /opt/ansible
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: "0755"
+
+    - name: Drop a marker file so you can confirm the bake worked
+      ansible.builtin.copy:
+        dest: /etc/image-build-info.txt
+        content: |
+          Image built by Packer + Ansible
+          Build time: {{ ansible_date_time.iso8601 }}
+        mode: "0644"
