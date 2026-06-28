@@ -26,6 +26,12 @@ Modern Packer uses HCL2 (the same language as Terraform) in `.pkr.hcl` files; ol
 packer init      # download required plugins
 packer validate  # check the template
 packer build     # build the image(s)
+
+packer init .
+packer fmt .
+packer validate -var "project_id=YOUR_PROJECT" .
+packer build  -var "project_id=YOUR_PROJECT" .
+
 ```
 
 **How it fits with Terraform and Ansible**
